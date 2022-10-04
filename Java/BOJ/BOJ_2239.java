@@ -30,22 +30,22 @@ public class BOJ_2239 {
             for(int j = 0; j < N; j++) {
                 int n = str.charAt(j) - '0';
                 board[i][j] = n;
-                if(n == 0) {
+                if(n == 0) {    // 0이 있다면 해당 위치를 리스트에 저장
                     zeroPosList.add(new Position(i, j));
                 }
             }
         }
 
-        zeroCnt = zeroPosList.size();
+        zeroCnt = zeroPosList.size();   // 채워야 하는 0의 개수
         perm(0);
 
         System.out.println(sb);
     }
 
     private static void perm(int cnt) {
-        if(findAnswer) return;
+        if(findAnswer) return;  // 답을 이미 찾았다면 리턴
 
-        if(cnt == zeroCnt) {
+        if(cnt == zeroCnt) {    // 0을 모두 채웠다면
             findAnswer = true;
             for(int i = 0; i < N; i++) {
                 for(int j = 0; j < N; j++) {
@@ -56,11 +56,12 @@ public class BOJ_2239 {
             return;
         }
 
-        Position curPos = zeroPosList.get(cnt);
+        Position curPos = zeroPosList.get(cnt); // 현재 위치 가져오기
         int curRow = curPos.row;
         int curCol = curPos.col;
 
         for(int i = 1; i <= N; i++) {
+            // 가로, 세로, 3 x 3에 겹치는게 없다면
             if(check(curRow, curCol, i)) {
                 board[curRow][curCol] = i;
                 perm(cnt + 1);
@@ -70,20 +71,23 @@ public class BOJ_2239 {
     }
 
     private static boolean check(int curRow, int curCol, int num) {
+        // 가로 검사
         for(int i = 0; i < N; i++) {
-            if(board[curRow][i] == num) {
+            if(board[curRow][i] == num) {   // 넣으려는 숫자가 이미 있다면
                 return false;
             }
         }
 
+        // 세로 검사
         for(int i = 0; i < N; i++) {
             if(board[i][curCol] == num) {
                 return false;
             }
         }
 
-        int startRow = curRow / 3 * 3;
-        int startCol = curCol / 3 * 3;
+        // 3 x 3 검사
+        int startRow = curRow / 3 * 3;  // 3 x 3 블럭의 시작 행
+        int startCol = curCol / 3 * 3;  // 3 x 3 블럭의 시작 열
         for(int i = startRow; i < startRow + 3; i++) {
             for(int j = startCol; j < startCol + 3; j++) {
                 if(board[i][j] == num) {
